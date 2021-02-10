@@ -1,21 +1,25 @@
 import os
-#using the smtplib library in python: SMTP: Simple Mail Transfer Protocol
 import smtplib
+import ssl
 
-sender = os.getenv("EMAIL")
-recievers = ['parwaanvirk@gmail.com','pulkitmahajan0402@gmail.com']
+port = 465
 
-message = """From: <2019ucs0073@iitjammu.ac.in>
-To: To Person <2019ume0203@iitjammu.ac.in>
-Subject: SMTP e-mail test
+smtp_server = 'smtp.gmail.com'
+sender_email = 'pulkitmahajan0402@gmail.com'
+reciever_email = ['yashjaincp@gmail.com','temporary2021000@gmail.com']
 
-This is a test e-mail message.
-Hemlo vro!!! XD
+password = input("Type in your password: ")
+name = input()
+
+message = """\
+Subject: Hi There!!
+
+www.gmail.com
+This email was generated using a python script!
 """
 
-server = smtplib.SMTP_SSL('smtp.gmail.com', 465) 
-server.ehlo() 
-server.login(os.getenv('EMAIL'), os.getenv('PASSWORD')) 
-
-server.sendmail(sender,recievers,message)
-print('successfully sent an email')
+context = ssl.create_default_context()
+with smtplib.SMTP_SSL(smtp_server, port, context = context) as server:
+    server.login(sender_email, password)
+    server.sendmail(sender_email, reciever_email, message)
+    print("Email sent")
