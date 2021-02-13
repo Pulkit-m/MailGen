@@ -1,36 +1,44 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from pprint import pprint
-import os 
+import os
 import pandas as pd
+import numpy as np
+from test_email import generate_email
+from dotenv import load_dotenv
 
-scope = ["https://spreadsheets.google.com/feeds",'https://www.googleapis.com/auth/spreadsheets',"https://www.googleapis.com/auth/drive.file","https://www.googleapis.com/auth/drive"]
+
+load_dotenv()
+
+scope = ["https://spreadsheets.google.com/feeds",
+         'https://www.googleapis.com/auth/spreadsheets',
+         "https://www.googleapis.com/auth/drive.file",
+         "https://www.googleapis.com/auth/drive"]
 
 creds = ServiceAccountCredentials.from_json_keyfile_name('credentials.json' , scope)
 client = gspread.authorize(creds)
-email_id = os.getenv('EMAIL')
 
 
 sheet = client.open("sample_sheet").sheet1
 data = sheet.get_all_records()
 
-df = pd.DataFrame(data)
-print(df.head(9),'\n','\n')
-
-print(df[df['email sent or not']==0]['Email Id'].unique())
-#col = df['email sent or not']==1
-#pprint(df[col]['Email Id'])
-
-print("emails sent!!")
 
 
-data = df.T.to_dict().values()
-for (i,email) in enumerate(df['email sent or not']):
-    if(email == 0):
-        sheet.update_cell(row = i+2, col = 5, value = 1)
+psswd = input('Enter your password: ')
+
+for (index, entry) in enumerate(data):
+    try:
+        print("\nEmail Generation Initiated")
+        generate_email(entry_dict = entry, password = psswd)
+    except Exception:
+        print("Error occured, Email could not be sent to {name}, order no.: {order_no}".format(name = entry['Name'].capitalize(),order_no = entry['Order_No']))
+    
+    else:
+        print("Email successfully sent to {name}, {order_no}".format(name = entry['Name'],order_no = entry['Order_No']))
+        sheet.update_cell(row = index+2 , col = 8, value=True)
+    finally:
+        if index == len(data)-1: print('Finished with all entries\n')
+        else : print("Moving to next entry \n")
+        
 
 
-
-
-
-#generates a google sheet into a dataframe jaha se jo chaje data nikal lo

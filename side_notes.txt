@@ -1,0 +1,13 @@
+This file contains useful sources reffered to, while writing the code.
+Sending emails using python-----> https://realpython.com/python-send-email/
+google sheets api usage and configuration-----> https://www.youtube.com/watch?v=cnPlKLEGR7E&t=185s
+
+using SSL and TLS protocols to encrypt the SMTP connection.
+SSL(secure sockets layer): connection secured from the beginning
+otherwise start the unsecure connection and then secure it with .starttls() method
+
+TLS is the more secure successor of SSL
+
+Gmail requires that you connect to port 465 if using SMTP_SSL(), and to port 587 when using .starttls().
+
+MIME (Multipurpose Internet Mail Extensions) Multipart email, combining HTML and plain-text. MIME messages are handled by Python’s email.mime module. 
