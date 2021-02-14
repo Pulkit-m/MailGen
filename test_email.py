@@ -49,8 +49,8 @@ def generate_email(entry_dict, password):
 
 
     (text, html) = giveTemplate(template)
-    part1 = MIMEText(text.format(name = name, tracking_details = tracking_details, order_id = order_no), "plain")
-    part2 = MIMEText(html.format(name = name, tracking_details = tracking_details, order_id = order_no), "html")
+    part1 = MIMEText(text.format(name = name, tracking_details = tracking_details, order_id = order_no, ref_no_refund = ref_no_refund, amount = amount ), "plain")
+    part2 = MIMEText(html.format(name = name, tracking_details = tracking_details, order_id = order_no, ref_no_refund = ref_no_refund, amount = amount ), "html")
 
     message = MIMEMultipart("alternative")
     message["From"] = sender_email

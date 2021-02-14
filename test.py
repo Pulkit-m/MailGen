@@ -32,7 +32,8 @@ for (index, entry) in enumerate(data):
         generate_email(entry_dict = entry, password = psswd)
     except Exception:
         print("Error occured, Email could not be sent to {name}, order no.: {order_no}".format(name = entry['Name'].capitalize(),order_no = entry['Order_No']))
-    
+        sheet.update_cell(row = index+2 , col = 8, value=False)
+
     else:
         print("Email successfully sent to {name}, {order_no}".format(name = entry['Name'],order_no = entry['Order_No']))
         sheet.update_cell(row = index+2 , col = 8, value=True)

@@ -1,0 +1,8 @@
+.env
+credentials.json
+__pycache__
+.vscode
+venv
+.ipynb_checkpoints/
+html_reader_test.py
+textfile.txt
