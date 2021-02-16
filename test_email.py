@@ -3,6 +3,8 @@ import smtplib
 import ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 from templates.template import giveTemplate
 from dotenv import load_dotenv
 load_dotenv()
@@ -30,7 +32,7 @@ load_dotenv()
 
 
 
-def generate_email(entry_dict, password):
+def generate_email(entry_dict):
     """entry_dict: a tuple representing a row of the sheet"""
     #parsing arguments
     
@@ -44,26 +46,21 @@ def generate_email(entry_dict, password):
     template = entry_dict['Template']
 
 
-    smtp_server = 'smtp.gmail.com'
     sender_email = os.getenv('SENDER_EMAIL')
-
+    api_key = os.getenv("SENDGRID_API_KEY")
 
     (text, html) = giveTemplate(template)
-    part1 = MIMEText(text.format(name = name, tracking_details = tracking_details, order_id = order_no, ref_no_refund = ref_no_refund, amount = amount ), "plain")
-    part2 = MIMEText(html.format(name = name, tracking_details = tracking_details, order_id = order_no, ref_no_refund = ref_no_refund, amount = amount ), "html")
-
-    message = MIMEMultipart("alternative")
-    message["From"] = sender_email
-    message["Subject"] = template
-    message["To"] = email_id
-
-    message.attach(part1)
-    message.attach(part2)
     
-    context = ssl.create_default_context()
-    with smtplib.SMTP_SSL(smtp_server, port = 465, context = context) as server:
-        server.login(sender_email, password)
-        server.sendmail(sender_email, email_id, message.as_string())
+    message = Mail(from_email = sender_email
+              ,to_emails = email_id
+              ,subject = template
+              ,plain_text_content = text.format(name = name, tracking_details = tracking_details, order_id = order_no, ref_no_refund = ref_no_refund, amount = amount )
+              ,html_content = html.format(name = name, tracking_details = tracking_details, order_id = order_no, ref_no_refund = ref_no_refund, amount = amount )
+              )
+    
+    sg = SendGridAPIClient(api_key)
+    sg.send(message)
+    
 
     
 

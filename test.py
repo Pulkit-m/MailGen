@@ -24,13 +24,14 @@ data = sheet.get_all_records()
 
 
 
-psswd = input('Enter your password: ')
+# psswd = input('Enter your password: ')
 
 for (index, entry) in enumerate(data):
     try:
         print("\nEmail Generation Initiated")
-        generate_email(entry_dict = entry, password = psswd)
-    except Exception:
+        generate_email(entry_dict = entry)
+    except Exception as e:
+        # print(e.message)
         print("Error occured, Email could not be sent to {name}, order no.: {order_no}".format(name = entry['Name'].capitalize(),order_no = entry['Order_No']))
         sheet.update_cell(row = index+2 , col = 8, value=False)
 
