@@ -1,6 +1,6 @@
 # MailGen
 <h1>Motivation</h1>
-This python script was
+This python script was created for a friend of mine. He was working for his sister's startup. His task was to read data from the company spreadsheet and then send personalized emails to all clients and respond to their queries. This took a lot of time. This repo solves the issue and now this python file automates the process once you run it on your shell. If implemented on a cloud, another feature can be added which will send the answer to client queries as soon as the customers put their request. <br><br><br>
 
 
 <h1>Setup</h1>
