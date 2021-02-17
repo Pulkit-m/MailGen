@@ -4,7 +4,7 @@ from pprint import pprint
 import os
 import pandas as pd
 import numpy as np
-from test_email import generate_email
+from email_script import generate_email
 from dotenv import load_dotenv
 
 
